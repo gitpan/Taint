@@ -12,3 +12,8 @@ Revision history for Perl extension Taint.
 	  Tom Phoenix's Taint module
 	- Tainting a reference taints what the reference refers to.
 	- Tainting a non-SV (including undef) throws an error
+
+0.05  Tue Dec 30 09:31:32 1997
+    - Ripped out the code for dereferencing variables. It's scalars or
+      nothing.
+    - Tweaked the code a bit to clean up a 'no return' warning.

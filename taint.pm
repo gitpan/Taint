@@ -15,7 +15,7 @@ require DynaLoader;
 	
 );
 @EXPORT_OK = qw(&taint &tainted);
-$VERSION = '0.04';
+$VERSION = '0.05';
 
 bootstrap Taint $VERSION;
 
@@ -38,8 +38,7 @@ Taint - Perl extension to taint variables
 
 =head1 DESCRIPTION
 
-C<taint()> marks its arguments as tainted. If a hard reference is passed, it's
-dereferenced (recursively if necessary) and the refered-to thing is tainted.
+C<taint()> marks its arguments as tainted.
 
 C<tainted()> returns true if its argument is tainted, false otherwise
 
@@ -49,21 +48,6 @@ C<tainted()> returns true if its argument is tainted, false otherwise
 
 You attempted to taint something untaintable, such as a constant or
 expression. C<taint()> only takes lvalues for arguments
-
-=head2 Taint reference recursion detected
-
-A reference loop was detected. C<taint()>, if passed a reference, will
-dereference it and try tainting that. If the dereferenced value is a
-reference, then it in turn is dereferenced and we try again. We keep
-track of all the references we see, though, and complain if we see the
-same reference twice. Otherwise this:
-
-	$bar = \$baz;
-	$baz = \$bar;
-	taint($bar);
-
-will loop forever, or at least until all your memory was eaten up by
-the recursive data structures.
 
 =head2 Attempt to taint an array
 
@@ -86,9 +70,7 @@ typeglob isn't one.
 
 =head2 Attempt to taint a reference
 
-This is an error you shouldn't ever get, and it indicates a problem with
-the Taint module somewhere. Regardless, it means that C<taint> tried
-tainting a hard reference, which won't work.
+You tried to taint a reference, which you just can't do. 
 
 =head2 Attempt to taint something unknown or undef
 

@@ -8,7 +8,7 @@
 # Change 1..1 below to 1..last_test_to_print .
 # (It may become useful if the test is moved to ./t subdirectory.)
 
-BEGIN { $| = 1; print "1..16\n"; }
+BEGIN { $| = 1; print "1..11\n"; }
 END {print "not ok 1\n" unless $loaded;}
 use Taint;
 $loaded = 1;
@@ -49,37 +49,25 @@ if ($@ =~ m/Attempt to taint read-only value/) {
 $foo = "bar";
 $baz = \$foo;
 Taint::taint($foo);
-# Check--does tainted walk up the reference?
-print Taint::tainted($baz) ? "ok 8\n" : "not ok 8\n";
-# Does it walk two levels up?
-print Taint::tainted(\$baz) ? "ok 9\n" : "not ok 9\n";
 
-$foo = "bar";
-# Did we just reset the taint?
-print Taint::tainted($foo) ? "not ok 10\n" : "ok 10\n";
-
-# Can we taint up the reference?
-Taint::taint($baz);
-print Taint::tainted($foo) ? "ok 11\n" : "not ok 11\n";
-
-# How about a reference that refers to itself?
-$baz = \$baz;
+# Can we taint a reference?
 eval{Taint::taint($baz)};
 # Did we error out properly?
-if ($@ =~ m/Taint reference recursion detected/) {
-    print "ok 12\n";
+if ($@ =~ m/Attempt to taint a reference/) {
+    print "ok 8\n";
 } else {
-    print "not ok 12\n";
+    print "not ok 8 #$@";
 }
 
 # How about an array?
+@yada = ('a', 'b', 'c');
 $baz = \@yada;
 eval{Taint::taint($baz)};
 # Did we error out properly?
 if ($@ =~ m/Attempt to taint an array/) {
-    print "ok 13\n";
+    print "ok 9\n";
 } else {
-    print "not ok 13\n";
+    print "not ok 9 #$@";
 }
 
 # How about a hash?
@@ -87,9 +75,9 @@ $baz = \%ahash;
 eval{Taint::taint($baz)};
 # Did we error out properly?
 if ($@ =~ m/Attempt to taint a hash/) {
-    print "ok 14\n";
+    print "ok 10\n";
 } else {
-    print "not ok 14\n";
+    print "not ok 10 #$@";
 }
 
 # How about a reference that refers to itself?
@@ -97,27 +85,9 @@ my $should_be_undef_to_start;
 eval{Taint::taint($should_be_undef_to_start)};
 # Did we error out properly?
 if ($@ =~ m/Attempt to taint something unknown or undef/) {
-    print "ok 15\n";
+    print "ok 11\n";
 } else {
-    print "not ok 15\n";
-}
-
-# Let's try multi-level recursion
-my ($Ta, $Tb, $Tc, $Td, $Te, $Tf, $Tg, $Th);
-$Ta = \$Th;
-$Tb = \$Ta;
-$Tc = \$Tb;
-$Td = \$Tc;
-$Te = \$Td;
-$Tf = \$Te;
-$Tg = \$Tf;
-$Th = \$Tg;
-eval{Taint::taint(\$Ta)};
-# Did we error out properly?
-if ($@ =~ m/Taint reference recursion detected/) {
-    print "ok 16\n";
-} else {
-    print "not ok 16\n";
+    print "not ok 11\n";
 }
 
 sub is_tainted {
