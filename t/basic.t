@@ -8,7 +8,7 @@
 # Change 1..1 below to 1..last_test_to_print .
 # (It may become useful if the test is moved to ./t subdirectory.)
 
-BEGIN { $| = 1; print "1..3\n"; }
+BEGIN { $| = 1; print "1..6\n"; }
 END {print "not ok 1\n" unless $loaded;}
 use Taint;
 $loaded = 1;
@@ -24,6 +24,10 @@ $foo = "bar";
 print is_tainted($foo) ? "not ok 2\n": "ok 2\n";
 Taint::taint($foo);
 print is_tainted($foo) ? "ok 3\n": "not ok 3\n";
+Taint::taint($bar, $baz);
+print is_tainted($bar) ? "ok 4\n": "not ok 4\n";
+print is_tainted($baz) ? "ok 5\n": "not ok 5\n";
+print Taint::tainted($bar) ? "ok 6\n": "not ok 6\n";
 
 sub is_tainted {
   return ! eval {

@@ -23,3 +23,14 @@ taint(...)
   }
    XSRETURN_EMPTY;
  }
+
+void
+tainted(...)
+  PPCODE:
+{
+  if (items != 1) croak("Usage: tainted(var)");
+  if (SvTAINTED(ST(0)))
+    XSRETURN_YES;
+  else
+    XSRETURN_NO;
+}

@@ -14,8 +14,8 @@ require DynaLoader;
 @EXPORT = qw(
 	
 );
-@EXPORT_OK = qw(&taint);
-$VERSION = '0.01';
+@EXPORT_OK = qw(&taint &tainted);
+$VERSION = '0.02';
 
 sub AUTOLOAD {
     # This AUTOLOAD is used to 'autoload' constants from the constant()
@@ -55,10 +55,13 @@ Taint - Perl extension to taint variables
 
   use Taint;
   taint($taintvar[, $anothervar[, $yetmorevars]]);
+  $bool = tainted($vartocheck);
 
 =head1 DESCRIPTION
 
-Marks all the variables passed to taint() as tainted.
+C<taint()> marks its arguments as tainted.
+
+C<tainted()> returns true if its argument is tainted, false otherwise
 
 =head1 AUTHOR
 
