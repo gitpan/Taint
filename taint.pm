@@ -15,7 +15,7 @@ require DynaLoader;
 	
 );
 @EXPORT_OK = qw(&taint &tainted);
-$VERSION = '0.03';
+$VERSION = '0.04';
 
 bootstrap Taint $VERSION;
 
@@ -50,18 +50,20 @@ C<tainted()> returns true if its argument is tainted, false otherwise
 You attempted to taint something untaintable, such as a constant or
 expression. C<taint()> only takes lvalues for arguments
 
-=head2 Taint reference recursion level too deep
+=head2 Taint reference recursion detected
 
-A reference chain was too deep. C<taint()>, if passed a reference, will
-dereference it and try tainting that. If the dereferenced value is a reference,
-then it in turn is dereferenced and we try again. After some point, though,
-we have to give up, otherwise mistakes like this:
+A reference loop was detected. C<taint()>, if passed a reference, will
+dereference it and try tainting that. If the dereferenced value is a
+reference, then it in turn is dereferenced and we try again. We keep
+track of all the references we see, though, and complain if we see the
+same reference twice. Otherwise this:
 
 	$bar = \$baz;
 	$baz = \$bar;
 	taint($bar);
 
-will loop forever.
+will loop forever, or at least until all your memory was eaten up by
+the recursive data structures.
 
 =head2 Attempt to taint an array
 

@@ -4,7 +4,8 @@ Copyright(c) 1997 Dan Sugalski <sugalskd@osshe.edu>
 
 You may distribute under the same terms as Perl.
 
-This module allows you to directly taint variables.
+This module allows you to directly taint and check the taint status of
+variables.
 
 The build is standard:
 

@@ -8,7 +8,7 @@
 # Change 1..1 below to 1..last_test_to_print .
 # (It may become useful if the test is moved to ./t subdirectory.)
 
-BEGIN { $| = 1; print "1..15\n"; }
+BEGIN { $| = 1; print "1..16\n"; }
 END {print "not ok 1\n" unless $loaded;}
 use Taint;
 $loaded = 1;
@@ -66,7 +66,7 @@ print Taint::tainted($foo) ? "ok 11\n" : "not ok 11\n";
 $baz = \$baz;
 eval{Taint::taint($baz)};
 # Did we error out properly?
-if ($@ =~ m/Taint reference recursion level too deep/) {
+if ($@ =~ m/Taint reference recursion detected/) {
     print "ok 12\n";
 } else {
     print "not ok 12\n";
@@ -100,6 +100,24 @@ if ($@ =~ m/Attempt to taint something unknown or undef/) {
     print "ok 15\n";
 } else {
     print "not ok 15\n";
+}
+
+# Let's try multi-level recursion
+my ($Ta, $Tb, $Tc, $Td, $Te, $Tf, $Tg, $Th);
+$Ta = \$Th;
+$Tb = \$Ta;
+$Tc = \$Tb;
+$Td = \$Tc;
+$Te = \$Td;
+$Tf = \$Te;
+$Tg = \$Tf;
+$Th = \$Tg;
+eval{Taint::taint(\$Ta)};
+# Did we error out properly?
+if ($@ =~ m/Taint reference recursion detected/) {
+    print "ok 16\n";
+} else {
+    print "not ok 16\n";
 }
 
 sub is_tainted {
