@@ -1,0 +1,14 @@
+Revision history for Perl extension Taint.
+
+0.01  Tue Sep 30 12:42:01 1997
+	- original version; created by h2xs 1.18
+
+0.02  Tue Sep 30 14:54:02 1997
+ 	- Added tainted() function to return true or false if the argument
+	  is tainted.
+
+0.03  Wed Oct 15 10:30:00 1997
+	- Returned errors for tainting read-only values compatible with
+	  Tom Phoenix's Taint module
+	- Tainting a reference taints what the reference refers to.
+	- Tainting a non-SV (including undef) throws an error
