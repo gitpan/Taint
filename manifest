@@ -1,7 +1,0 @@
-CHANGES
-Makefile.PL
-MANIFEST
-Taint.pm
-Taint.xs
-readme
-t/basic.t
