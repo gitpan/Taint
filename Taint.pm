@@ -15,7 +15,7 @@ require DynaLoader;
 	
 );
 @EXPORT_OK = qw(&taint &tainted);
-$VERSION = '0.06';
+$VERSION = '0.07';
 
 bootstrap Taint $VERSION;
 

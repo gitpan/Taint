@@ -97,7 +97,7 @@ tainted(...)
 {
   if (items != 1) croak("Usage: tainted(var)");
   /* If we're not in tainting mode, unconditionally return no */
-  if (!tainting)
+  if (!PL_tainting)
     XSRETURN_NO;
 
   if (SvTAINTED(ST(0))) {
