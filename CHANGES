@@ -17,3 +17,6 @@ Revision history for Perl extension Taint.
     - Ripped out the code for dereferencing variables. It's scalars or
       nothing.
     - Tweaked the code a bit to clean up a 'no return' warning.
+
+0.06  Tue May 14 10:48:12 2002
+    - Fixed casing issues

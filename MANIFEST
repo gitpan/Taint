@@ -3,5 +3,5 @@ Makefile.PL
 MANIFEST
 Taint.pm
 Taint.xs
-readme
+README
 t/basic.t
